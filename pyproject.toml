@@ -1,0 +1,26 @@
+[project]
+name = "ltm-agent"
+version = "0.1.0"
+description = "Little Thinking Agent"
+readme = "README.md"
+requires-python = ">=3.12"
+dependencies = [
+    # "google-adk[a2a]",
+    "google-adk",
+    "python-dotenv",
+    "pytest",
+    "pytest-asyncio",
+    "pytest-xdist",
+]
+
+# cli 
+[project.scripts]
+ltm-agent = "ltm_agent.main:main"
+llma = "ltm_agent.main:main"
+
+[tool.ruff]
+line-length = 160
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

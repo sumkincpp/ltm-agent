@@ -1,0 +1,96 @@
+# Planning Agent Configuration
+# Demonstrates how to use PlanningAgent to solve complex multi-step queries
+
+defaults:
+  model:
+    name: gemini-2.5-flash-lite
+    retry_options:
+      attempts: 5
+      exp_base: 7
+      initial_delay: 10
+      http_status_codes: [429, 500, 503, 504]
+
+# External tools for testing
+external_tools:
+  weather_tool: "./external_tools/tools.py:get_weather"
+  fibonacci_tool: "./external_tools/tools.py:calculate_fibonacci"
+  db_search: "./external_tools/tools.py:DatabaseClient.search"
+  current_time: "./external_tools/tools.py:get_current_time"
+
+# Individual executor agents
+agents:
+  # Math operations agent
+  math_agent:
+    instruction: "I can calculate mathematical operations including Fibonacci numbers."
+    tools:
+      - fibonacci_tool
+
+  weather_agent:
+    instruction: "I can provide weather information for cities."
+    tools:
+      - weather_tool
+
+  database_agent:
+    instruction: "I can search through database records."
+    tools:
+      - db_search
+
+  general_agent:
+    instruction: "I can search the web for general information."
+    tools:
+      - google_search
+
+  current_time_agent:
+    instruction: "I can provide the current time for any timezone. Call current_time with the timezone as input."
+    tools:
+      - current_time
+
+  code_executor_agent:
+    instruction: |
+      You are a specialized code execution agent that ONLY responds with Python code.
+      You are forbidden from providing any text, explanations, or conversational responses.
+
+      Your task is to take a request for a calculation or computation and translate it into a single block of Python code.
+
+      RULES:
+      1. Your output MUST be ONLY a Python code block.
+      2. Do NOT write any text before or after the code block.
+      3. The Python code MUST calculate or compute the result.
+      4. The Python code MUST print the final result to stdout.
+      5. You are PROHIBITED from performing the calculation yourself. Your only job is to generate the code that will perform the calculation.
+      6. For complex calculations, data processing, or algorithmic tasks, generate the appropriate Python code.
+
+      Failure to follow these rules will result in an error.
+    code_executor: BuiltInCodeExecutor
+
+# Planning pipelines
+pipelines:
+  planning_math:
+    class: PlanningAgent
+    executor_agents:
+      - math_agent
+
+  planning_weather:
+    class: PlanningAgent
+    executor_agents:
+      - weather_agent
+
+  planning_full:
+    class: PlanningAgent
+    executor_agents:
+      - math_agent
+      - weather_agent
+      # - database_agent
+      - general_agent
+      - current_time_agent
+      - code_executor_agent
+
+  # Planning with custom instruction
+  planning_custom:
+    class: PlanningAgent
+    instruction: |
+      You are a specialized planning agent for data analysis tasks.
+      Break down queries into: data collection, analysis, and visualization steps.
+    executor_agents:
+      - math_agent
+      - database_agent

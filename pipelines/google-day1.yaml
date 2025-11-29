@@ -1,0 +1,138 @@
+# Multi-Agent Configuration
+# Usage: python run.py config.yaml --list
+#        python run.py config.yaml <pipeline_name> "<query>"
+defaults:
+  model:
+    provider: gemini
+    name: gemini-2.5-flash-lite
+    retry_options:
+      attempts: 5
+      exp_base: 7
+      initial_delay: 1
+      http_status_codes: [429, 500, 503, 504]
+
+agents:
+  research_agent:
+    instruction: |
+      You are a specialized research agent. Use google_search to find 2-3 pieces 
+      of relevant information on the given topic and present findings with citations.
+    tools: [google_search]
+    output_key: research_findings
+  
+  summarizer_agent:
+    instruction: |
+      Read the provided research findings: {research_findings}
+      Create a concise summary as a bulleted list with 3-5 key points.
+    output_key: final_summary
+  
+  outline_agent:
+    instruction: |
+      Create a blog outline for the given topic with:
+      1. A catchy headline
+      2. An introduction hook
+      3. 3-5 main sections with 2-3 bullet points each
+      4. A concluding thought
+    output_key: blog_outline
+  
+  writer_agent:
+    instruction: |
+      Following this outline strictly: {blog_outline}
+      Write a brief, 200-300 word blog post with engaging and informative tone.
+    output_key: blog_draft
+  
+  editor_agent:
+    instruction: |
+      Edit this draft: {blog_draft}
+      Fix grammatical errors, improve flow and sentence structure, enhance clarity.
+    output_key: final_blog
+  
+  tech_researcher:
+    instruction: |
+      Research the latest AI/ML trends. Include 3 key developments,
+      main companies involved, and potential impact. Keep report concise (100 words).
+    tools: [google_search]
+    output_key: tech_research
+  
+  health_researcher:
+    instruction: |
+      Research recent medical breakthroughs. Include 3 significant advances,
+      practical applications, and estimated timelines. Keep concise (100 words).
+    tools: [google_search]
+    output_key: health_research
+  
+  finance_researcher:
+    instruction: |
+      Research current fintech trends. Include 3 key trends,
+      market implications, and future outlook. Keep concise (100 words).
+    tools: [google_search]
+    output_key: finance_research
+  
+  aggregator_agent:
+    instruction: |
+      Combine these three research findings into a single executive summary:
+      
+      **Technology:** {tech_research}
+      **Health:** {health_research}
+      **Finance:** {finance_research}
+      
+      Highlight common themes, surprising connections, and key takeaways. Around 200 words.
+    output_key: executive_summary
+  
+  initial_writer:
+    instruction: |
+      Based on the user's prompt, write the first draft of a short story (100-150 words).
+      Output only the story text, no introduction or explanation.
+    output_key: current_story
+  
+  critic_agent:
+    instruction: |
+      You are a constructive story critic. Review the story: {current_story}
+      
+      Evaluate plot, characters, and pacing.
+      - If well-written and complete, respond EXACTLY: "APPROVED"
+      - Otherwise, provide 2-3 specific, actionable suggestions for improvement.
+    output_key: critique
+  
+  refiner_agent:
+    instruction: |
+      You have a story draft and critique.
+      Story: {current_story}
+      Critique: {critique}
+      
+      - IF critique is EXACTLY "APPROVED", call the exit_loop function.
+      - OTHERWISE, rewrite the story to fully incorporate the feedback.
+    output_key: current_story
+    tools: [exit_loop]
+
+pipelines:
+  # Example 1: Agent orchestration (Agent uses other agents as tools)
+  research_coordinator:
+    class: Agent
+    instruction: |
+      You are a research coordinator. Answer the user's query by orchestrating:
+      1. MUST call research_agent tool to find relevant information
+      2. MUST call summarizer_agent tool to create concise summary
+      3. Present the final summary clearly to the user
+    tools: [research_agent, summarizer_agent]
+  
+  # Example 2: Sequential pipeline (Simple agent chain)
+  blog_pipeline:
+    class: SequentialAgent
+    agents: [outline_agent, writer_agent, editor_agent]
+  
+  # Example 3: Parallel + Sequential (Complex composition)
+  parallel_research:
+    class: SequentialAgent
+    agents:
+      - class: ParallelAgent
+        agents: [tech_researcher, health_researcher, finance_researcher]
+      - aggregator_agent
+  
+  # Example 4: Loop with sequential (Iterative refinement)
+  story_pipeline:
+    class: SequentialAgent
+    agents:
+      - initial_writer
+      - class: LoopAgent
+        max_iterations: 2
+        agents: [critic_agent, refiner_agent]
