@@ -75,7 +75,7 @@ Current system prompt used is available at [src/ltm_agent/prompts/thinking_agent
 
 This project implements a modular architecture for building agentic systems using Google's ADK framework.
 
-![Architecture Diagram]([./docs/ltm-agent-architecture.svg](https://raw.githubusercontent.com/sumkincpp/ltm-agent/refs/heads/main/docs/ltm-agent-architecture.svg))
+![Architecture Diagram](https://raw.githubusercontent.com/sumkincpp/ltm-agent/refs/heads/main/docs/ltm-agent-architecture.svg)
 
 ## Demo
 
