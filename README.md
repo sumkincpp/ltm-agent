@@ -2,7 +2,7 @@
 
 <html>
     <h2 align="center">
-      <img src="https://raw.githubusercontent.com/sumkincpp/ltm-agent/refs/heads/main/assets/little-thinking-model.png" width="256"/>
+      <img src="https://raw.githubusercontent.com/sumkincpp/ltm-agent/main/docs/little-thinking-model.png" width="256"/>
     </h2>
 </html>
 
