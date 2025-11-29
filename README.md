@@ -1,6 +1,6 @@
 # Little Thinking Model (LTM)
 
-**Little Thinking Model (LTM)** is an agentic system built on Google's ADK framework that implements multi-agent design patterns.
+**Little Thinking Model (LTM)** is an agentic system built on Google's ADK that implements iterative multi-step reasoning with verification of user constraints.
 
 It combines:
 

@@ -1,6 +1,6 @@
 # Little Thinking Model (LTM)
 
-**Little Thinking Model (LTM)** is an agentic system built on Google's ADK framework that implements multi-agent design patterns.
+**Little Thinking Model (LTM)** is an agentic system built on Google's ADK that implements iterative multi-step reasoning with verification of user constraints.
 
 It combines:
 
@@ -11,7 +11,7 @@ It combines:
 The agent system enables the creation of complex agent pipelines using simple YAML configuration files,
 allowing for easy integration of external tools via function calling and multi-step reasoning with context engineering.
 
-## Motivation
+## Problem Statement and Motivation
 
 Complex tasks we provide to Large Language Models often require multiple steps of reasoning with complex logical reasoning (filtering, aggregation, ..), tool calling, and verification of user constraints. In these scenarios, simple LLM-based agents frequently struggle to provide complete and correct answers due to their limited attention capabilities.
 
@@ -76,6 +76,14 @@ See ![Iterative Problem-Solving Flow](./docs/iterative-process.svg) for an overv
 This project implements a modular architecture for building agentic systems using Google's ADK framework.
 
 See ![Architecture Diagram](./docs/ltm-agent-architecture.svg) for an overview of the architecture.
+
+## Demo
+
+Little thinking model is capable of solving some  complex multi-step reasoning tasks. Here are some example queries that can be used to test its capabilities:
+
+- show 2 cities where temperature equals current time hours
+- show temperature and time and some news title for 3 european cities where temperature > 5, output as markdown table
+- calculate factorial of 10
 
 ## Components
 
