@@ -1,5 +1,11 @@
 # Little Thinking Model (LTM)
 
+<html>
+    <h2 align="center">
+      <img src="https://raw.githubusercontent.com/sumkincpp/ltm-agent/refs/heads/main/assets/little-thinking-model.jpg" width="256"/>
+    </h2>
+</html>
+
 **Little Thinking Model (LTM)** is an agentic system built on Google's ADK that implements iterative multi-step reasoning with verification of user constraints.
 
 It combines:
