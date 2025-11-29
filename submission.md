@@ -69,13 +69,13 @@ To conclude, large LLMs are capable of sophisticated, domain-specific reasoning,
 
 Current system prompt used is available at [src/ltm_agent/prompts/thinking_agent.txt](src/ltm_agent/prompts/thinking_agent.txt)
 
-See ![Iterative Problem-Solving Flow](./docs/iterative-process.svg) for an overview of the iterative problem-solving process.
+![Iterative Problem-Solving Flow](https://raw.githubusercontent.com/sumkincpp/ltm-agent/refs/heads/main/docs/iterative-process.svg) 
 
 ## Architecture
 
 This project implements a modular architecture for building agentic systems using Google's ADK framework.
 
-See ![Architecture Diagram](./docs/ltm-agent-architecture.svg) for an overview of the architecture.
+![Architecture Diagram]([./docs/ltm-agent-architecture.svg](https://raw.githubusercontent.com/sumkincpp/ltm-agent/refs/heads/main/docs/ltm-agent-architecture.svg))
 
 ## Demo
 
